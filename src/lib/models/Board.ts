@@ -52,8 +52,7 @@ const BoardSchema = new Schema<IBoard>({
   ownerId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
+    required: true
   },
   members: [BoardMemberSchema],
   isPublic: {
@@ -63,12 +62,6 @@ const BoardSchema = new Schema<IBoard>({
 }, {
   timestamps: true
 });
-
-// Indexes for performance
-BoardSchema.index({ ownerId: 1, createdAt: -1 });
-BoardSchema.index({ 'members.userId': 1 });
-BoardSchema.index({ isPublic: 1, createdAt: -1 });
-BoardSchema.index({ title: 'text', description: 'text' });
 
 // Methods
 BoardSchema.methods.getMemberRole = function(userId: string): BoardRole | null {

@@ -20,8 +20,7 @@ const UserSchema = new Schema<IUser>({
   auth0Id: {
     type: String,
     required: true,
-    unique: true,
-    index: true
+    unique: true
   },
   email: {
     type: String,
@@ -55,12 +54,6 @@ const UserSchema = new Schema<IUser>({
 }, {
   timestamps: true
 });
-
-// Indexes for performance
-UserSchema.index({ email: 1 });
-UserSchema.index({ role: 1 });
-UserSchema.index({ status: 1 });
-UserSchema.index({ createdAt: -1 });
 
 // Prevent re-compilation during development
 const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
