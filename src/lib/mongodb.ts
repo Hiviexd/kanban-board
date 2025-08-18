@@ -1,60 +1,61 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
+    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
 interface MongooseCache {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
 }
 
 // Global variable to cache the mongoose connection
 // Handle both Node.js and Edge Runtime environments
 interface GlobalWithMongoose {
-  mongoose?: MongooseCache;
+    mongoose?: MongooseCache;
 }
 
-const globalForMongoose = (typeof global !== 'undefined' ? global : globalThis) as GlobalWithMongoose;
+const globalForMongoose = (typeof global !== "undefined" ? global : globalThis) as GlobalWithMongoose;
 
 const cached = globalForMongoose.mongoose || { conn: null, promise: null };
 
 if (!globalForMongoose.mongoose) {
-  globalForMongoose.mongoose = cached;
+    globalForMongoose.mongoose = cached;
 }
 
 async function connectDB() {
-  if (cached.conn) {
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        const opts = {
+            bufferCommands: false,
+        };
+
+        cached.promise = mongoose
+            .connect(MONGODB_URI, opts)
+            .then((mongoose) => {
+                console.log("✅ Connected to MongoDB");
+                return mongoose;
+            })
+            .catch((error) => {
+                console.error("❌ MongoDB connection error:", error);
+                throw error;
+            });
+    }
+
+    try {
+        cached.conn = await cached.promise;
+    } catch (e) {
+        console.error("Failed to establish MongoDB connection:", e);
+        cached.promise = null;
+        throw e;
+    }
+
     return cached.conn;
-  }
-
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log('✅ Connected to MongoDB');
-      return mongoose;
-    }).catch((error) => {
-      console.error('❌ MongoDB connection error:', error);
-      throw error;
-    });
-  }
-
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    console.error('Failed to establish MongoDB connection:', e);
-    cached.promise = null;
-    throw e;
-  }
-
-  return cached.conn;
 }
 
 export default connectDB;
