@@ -1,4 +1,3 @@
-// Client-safe board types and enums
 export enum BoardRole {
     OWNER = "owner",
     EDITOR = "editor",
@@ -11,7 +10,6 @@ export interface BoardMember {
     joinedAt: Date;
 }
 
-// Client-safe board interface (without Mongoose Document)
 export interface Board {
     _id: string;
     title: string;

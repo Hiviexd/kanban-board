@@ -28,7 +28,6 @@ export async function getAuthContext(): Promise<AuthContext> {
 
         await connectDB();
 
-        // Find user in database
         let user = await User.findOne({ auth0Id: session.user.sub });
 
         if (!user) {

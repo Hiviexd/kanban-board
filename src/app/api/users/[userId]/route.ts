@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
         await connectDB();
 
-        const user = await User.findById(params.userId).select("-__v");
+        const user = await User.findById(params.userId);
 
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });

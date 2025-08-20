@@ -1,7 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { BoardRole } from "../types/board";
 
-// Re-export for backward compatibility
 export { BoardRole };
 
 export interface IBoardMember {
@@ -84,7 +83,6 @@ BoardSchema.methods.canUserView = function (userId: string): boolean {
     return this.getMemberRole(userId) !== null;
 };
 
-// Prevent re-compilation during development
 const Board = mongoose.models.Board || mongoose.model<IBoard>("Board", BoardSchema);
 
 export default Board;

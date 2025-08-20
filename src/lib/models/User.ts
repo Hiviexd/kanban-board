@@ -1,7 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UserRole, UserStatus } from "../types/user";
 
-// Re-export for backward compatibility
 export { UserRole, UserStatus };
 
 export interface IUser extends Document {
@@ -58,7 +57,6 @@ const UserSchema = new Schema<IUser>(
     }
 );
 
-// Prevent re-compilation during development
 const User = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 
 export default User;

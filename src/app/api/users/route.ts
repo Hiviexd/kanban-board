@@ -21,7 +21,7 @@ export async function GET(_request: NextRequest) {
 
         await connectDB();
 
-        const users = await User.find({}).select("-__v").sort({ createdAt: -1 });
+        const users = await User.find({}).sort({ createdAt: -1 });
 
         return NextResponse.json({ users });
     } catch (error) {
