@@ -14,11 +14,10 @@ import {
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Kanban, LogOut, Settings, User, Users } from "lucide-react";
 import { UserRole } from "@/lib/types/user";
+import { IUser } from "@/lib/models/User";
 
-export default function Header() {
-    const { user, isLoading } = useUser();
-
-    console.log(user);
+export default function Header({ user }: { user: IUser | null }) {
+    const { isLoading } = useUser();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
