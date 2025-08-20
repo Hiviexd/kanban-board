@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Kanban, LogOut, Settings, User, Users } from "lucide-react";
-import Image from "next/image";
 import { UserRole } from "@/lib/types/user";
 
 export default function Header() {
     const { user, isLoading } = useUser();
+
+    console.log(user);
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -61,18 +62,14 @@ export default function Header() {
                             {/* User Menu */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                                        {user.picture ? (
-                                            <Image
-                                                src={user.picture}
-                                                alt={user.name || "User"}
-                                                width={32}
-                                                height={32}
-                                                className="rounded-full"
-                                            />
-                                        ) : (
+                                    <Button
+                                        variant="ghost"
+                                        className="relative h-8 w-8 rounded-full border border-gray-300">
+                                        <div className="flex items-center justify-center w-full h-full rounded-full bg-muted">
                                             <User className="h-4 w-4" />
-                                        )}
+                                        </div>
+
+                                        <span className="sr-only">Open user menu</span>
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56" align="end" forceMount>
