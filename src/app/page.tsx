@@ -13,8 +13,7 @@ export default function Home() {
                         Collaborative Kanban Board
                     </h1>
                     <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Organize your projects with real-time collaboration, powerful user management, and seamless
-                        Auth0 authentication.
+                        The prime way to manage your projects and tasks.
                     </p>
                     <div className="flex gap-4 justify-center">
                         <Button size="lg" asChild>
@@ -51,7 +50,7 @@ export default function Home() {
                             <Users className="h-6 w-6 text-primary" />
                         </div>
                         <h3 className="text-xl font-semibold mb-2">User Management</h3>
-                        <p className="text-muted-foreground">Advanced role-based permissions and user administration</p>
+                        <p className="text-muted-foreground">Role-based permissions and user administration</p>
                     </div>
                 </div>
 
@@ -59,9 +58,9 @@ export default function Home() {
                 <div className="text-center bg-muted/50 rounded-lg p-8">
                     <h2 className="text-2xl font-semibold mb-4">Ready to get started?</h2>
                     <p className="text-muted-foreground mb-6">
-                        Sign up now with Google OAuth and start organizing your projects
+                        Sign up now and start organizing your projects!
                     </p>
-                    <Button size="lg" asChild>
+                    <Button size="lg" asChild variant="outline">
                         <a href="/auth/login">Sign Up Now</a>
                     </Button>
                 </div>
