@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { UserPlus, RefreshCw, AlertCircle } from "lucide-react";
+import { RefreshCw, AlertCircle } from "lucide-react";
 import { User } from "@/lib/types/user";
 import AdminStats from "./admin-stats";
 import UserManagement from "./user-management";
@@ -48,13 +48,9 @@ export default function AdminDashboard({ initialUsers }: AdminDashboardProps) {
                     <p className="text-muted-foreground">Manage users, roles, and system statistics</p>
                 </div>
                 <div className="flex gap-2">
-                    <Button variant="outline" onClick={fetchUsers} disabled={loading}>
+                    <Button variant="outline" onClick={fetchUsers} disabled={loading} className="cursor-pointer">
                         <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} />
                         Refresh
-                    </Button>
-                    <Button>
-                        <UserPlus className="h-4 w-4 mr-2" />
-                        Invite User
                     </Button>
                 </div>
             </div>

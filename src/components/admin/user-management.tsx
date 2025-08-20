@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Eye, Shield, Ban, Trash2, RefreshCw, AlertCircle } from "lucide-react";
 import { User, UserRole, UserStatus } from "@/lib/types/user";
+import UserDetailsModal from "./user-details-modal";
 
 interface UserManagementProps {
     initialUsers: User[];
@@ -23,6 +24,8 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
     const [users, setUsers] = useState<User[]>(initialUsers);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [userDetailsOpen, setUserDetailsOpen] = useState(false);
 
     // Update users and notify parent
     const updateUsers = (newUsers: User[]) => {
@@ -151,6 +154,12 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
         return formatDate(date);
     };
 
+    // Open user details modal
+    const openUserDetails = (user: User) => {
+        setSelectedUser(user);
+        setUserDetailsOpen(true);
+    };
+
     const getRoleBadgeVariant = (role: UserRole) => {
         return role === UserRole.ADMIN ? "destructive" : "secondary";
     };
@@ -164,13 +173,9 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <div>
-                        <CardTitle>User Management</CardTitle>
+                        <CardTitle className="text-2xl mb-2">User Management</CardTitle>
                         <CardDescription>View and manage all registered users and their permissions</CardDescription>
                     </div>
-                    <Button variant="outline" onClick={fetchUsers} size="sm">
-                        <RefreshCw className="h-4 w-4 mr-2" />
-                        Refresh
-                    </Button>
                 </div>
             </CardHeader>
             <CardContent>
@@ -228,7 +233,7 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                                             <DropdownMenuTrigger asChild>
                                                 <Button
                                                     variant="ghost"
-                                                    className="h-8 w-8 p-0"
+                                                    className="h-8 w-8 p-0 cursor-pointer"
                                                     disabled={actionLoading === user._id}>
                                                     {actionLoading === user._id ? (
                                                         <RefreshCw className="h-4 w-4 animate-spin" />
@@ -238,16 +243,7 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem
-                                                    onClick={() =>
-                                                        alert(
-                                                            `User Details:\nID: ${user._id}\nAuth0 ID: ${
-                                                                user.auth0Id
-                                                            }\nCreated: ${formatDate(
-                                                                user.createdAt
-                                                            )}\nLast Login: ${formatRelativeTime(user.lastLoginAt)}`
-                                                        )
-                                                    }>
+                                                <DropdownMenuItem onClick={() => openUserDetails(user)}>
                                                     <Eye className="mr-2 h-4 w-4" />
                                                     View Details
                                                 </DropdownMenuItem>
@@ -264,7 +260,7 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                                                     <DropdownMenuItem
                                                         onClick={() => updateUserRole(user._id, UserRole.USER)}>
                                                         <Shield className="mr-2 h-4 w-4" />
-                                                        Make User
+                                                        Remove Admin
                                                     </DropdownMenuItem>
                                                 )}
 
@@ -290,6 +286,9 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                     </TableBody>
                 </Table>
             </CardContent>
+
+            {/* User Details Modal */}
+            <UserDetailsModal user={selectedUser} open={userDetailsOpen} onOpenChange={setUserDetailsOpen} />
         </Card>
     );
 }
