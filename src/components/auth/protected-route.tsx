@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@auth0/nextjs-auth0";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserRole } from "@/lib/types/user";
 
@@ -14,8 +14,6 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children, requiredRole, fallback }: ProtectedRouteProps) {
     const { user, isLoading } = useUser();
     const router = useRouter();
-    const [userSynced, setUserSynced] = useState(false);
-    const [syncError, setSyncError] = useState(false);
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -23,37 +21,12 @@ export default function ProtectedRoute({ children, requiredRole, fallback }: Pro
         }
     }, [user, isLoading, router]);
 
-    // Sync user with our database when they first load
-    useEffect(() => {
-        const syncUser = async () => {
-            if (user && !userSynced) {
-                try {
-                    const response = await fetch("/api/users", {
-                        method: "POST",
-                    });
-
-                    if (response.ok) {
-                        setUserSynced(true);
-                    } else {
-                        console.error("Failed to sync user");
-                        setSyncError(true);
-                    }
-                } catch (error) {
-                    console.error("Error syncing user:", error);
-                    setSyncError(true);
-                }
-            }
-        };
-
-        syncUser();
-    }, [user, userSynced]);
-
-    if (isLoading || (user && !userSynced && !syncError)) {
+    if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">{isLoading ? "Loading..." : "Setting up your account..."}</p>
+                    <p className="text-muted-foreground">Loading...</p>
                 </div>
             </div>
         );
@@ -69,24 +42,6 @@ export default function ProtectedRoute({ children, requiredRole, fallback }: Pro
                     </div>
                 </div>
             )
-        );
-    }
-
-    if (syncError) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="text-center">
-                    <h2 className="text-2xl font-semibold mb-2">Setup Error</h2>
-                    <p className="text-muted-foreground mb-4">
-                        There was an error setting up your account. Please try refreshing the page.
-                    </p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-primary text-primary-foreground rounded-md">
-                        Refresh Page
-                    </button>
-                </div>
-            </div>
         );
     }
 

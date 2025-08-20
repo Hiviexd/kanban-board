@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Auth0ProviderWrapper from "@/components/providers/auth0-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import UserSyncProvider from "@/components/providers/user-sync-provider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,7 +30,7 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Auth0ProviderWrapper>
                     <ThemeProvider defaultTheme="light" storageKey="kanban-theme">
-                        {children}
+                        <UserSyncProvider>{children}</UserSyncProvider>
                     </ThemeProvider>
                 </Auth0ProviderWrapper>
             </body>
