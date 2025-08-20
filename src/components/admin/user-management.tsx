@@ -14,6 +14,7 @@ import {
 import { MoreHorizontal, Eye, Shield, Ban, Trash2, RefreshCw, AlertCircle } from "lucide-react";
 import { User, UserRole, UserStatus } from "@/lib/types/user";
 import UserDetailsModal from "./user-details-modal";
+import { formatDate, formatRelativeTime } from "@/lib/date-utils";
 
 interface UserManagementProps {
     initialUsers: User[];
@@ -133,25 +134,6 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
         } finally {
             setActionLoading(null);
         }
-    };
-
-    // Format date
-    const formatDate = (dateString: string | Date) => {
-        return new Date(dateString).toLocaleDateString();
-    };
-
-    // Format relative time
-    const formatRelativeTime = (dateString?: string | Date) => {
-        if (!dateString) return "Never";
-
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-
-        if (diffInHours < 1) return "Just now";
-        if (diffInHours < 24) return `${diffInHours} hours ago`;
-        if (diffInHours < 168) return `${Math.floor(diffInHours / 24)} days ago`;
-        return formatDate(date);
     };
 
     // Open user details modal

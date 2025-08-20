@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { User, UserRole, UserStatus } from "@/lib/types/user";
 import { CalendarDays, Clock, Shield, User as UserIcon, IdCard } from "lucide-react";
 import Image from "next/image";
+import { formatDate, formatRelativeTime } from "@/lib/date-utils";
 
 interface UserDetailsModalProps {
     user: User | null;
@@ -14,31 +15,6 @@ interface UserDetailsModalProps {
 
 export default function UserDetailsModal({ user, open, onOpenChange }: UserDetailsModalProps) {
     if (!user) return null;
-
-    // Format date
-    const formatDate = (dateString: string | Date) => {
-        return new Date(dateString).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-    };
-
-    // Format relative time
-    const formatRelativeTime = (dateString?: string | Date) => {
-        if (!dateString) return "Never";
-
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-
-        if (diffInHours < 1) return "Just now";
-        if (diffInHours < 24) return `${diffInHours} hours ago`;
-        if (diffInHours < 168) return `${Math.floor(diffInHours / 24)} days ago`;
-        return formatDate(date);
-    };
 
     const getRoleBadgeVariant = (role: UserRole) => {
         return role === UserRole.ADMIN ? "destructive" : "secondary";
