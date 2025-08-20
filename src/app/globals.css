@@ -57,4 +57,14 @@
         color: hsl(var(--color-foreground));
         font-feature-settings: "rlig" 1, "calt" 1;
     }
+
+    /* Ensure dialog and popover backgrounds work properly */
+    [data-slot="dialog-content"] {
+        background-color: hsl(var(--color-background)) !important;
+        color: hsl(var(--color-foreground)) !important;
+    }
+
+    [data-slot="dialog-overlay"] {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
 }
