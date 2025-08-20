@@ -14,6 +14,7 @@ import {
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Kanban, LogOut, Settings, User, Users } from "lucide-react";
 import Image from "next/image";
+import { UserRole } from "@/lib/types/user";
 
 export default function Header() {
     const { user, isLoading } = useUser();
@@ -47,13 +48,15 @@ export default function Header() {
                                 </Link>
                             </Button>
 
-                            {/* Admin Link - TODO: Add role check */}
-                            <Button variant="ghost" asChild>
-                                <Link href="/admin">
-                                    <Users className="h-4 w-4 mr-2" />
-                                    Admin
-                                </Link>
-                            </Button>
+                            {/* Admin Link */}
+                            {user?.role === UserRole.ADMIN && (
+                                <Button variant="ghost" asChild>
+                                    <Link href="/admin">
+                                        <Users className="h-4 w-4 mr-2" />
+                                        Admin
+                                    </Link>
+                                </Button>
+                            )}
 
                             {/* User Menu */}
                             <DropdownMenu>
