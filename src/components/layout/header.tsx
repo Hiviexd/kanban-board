@@ -25,7 +25,7 @@ export default function Header({ user }: { user: IUser | null }) {
                 {/* Logo and Brand */}
                 <Link href="/" className="flex items-center space-x-2 ml-4">
                     <Kanban className="h-6 w-6" />
-                    <span className="font-bold text-xl">KanbanBoard</span>
+                    <span className="font-bold text-xl">Kanban Board</span>
                 </Link>
 
                 {/* Navigation */}
@@ -63,7 +63,7 @@ export default function Header({ user }: { user: IUser | null }) {
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         variant="ghost"
-                                        className="relative h-8 w-8 rounded-full border border-gray-300">
+                                        className="relative h-8 w-8 rounded-full border border-gray-300 mr-4">
                                         <div className="flex items-center justify-center w-full h-full rounded-full bg-muted">
                                             <User className="h-4 w-4" />
                                         </div>
