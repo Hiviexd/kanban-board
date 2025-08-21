@@ -4,6 +4,7 @@ import "./globals.css";
 import Auth0ProviderWrapper from "@/components/providers/auth0-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import UserSyncProvider from "@/components/providers/user-sync-provider";
+import QueryProvider from "@/components/providers/query-provider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,9 +30,11 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Auth0ProviderWrapper>
-                    <ThemeProvider defaultTheme="light" storageKey="kanban-theme">
-                        <UserSyncProvider>{children}</UserSyncProvider>
-                    </ThemeProvider>
+                    <QueryProvider>
+                        <ThemeProvider defaultTheme="light" storageKey="kanban-theme">
+                            <UserSyncProvider>{children}</UserSyncProvider>
+                        </ThemeProvider>
+                    </QueryProvider>
                 </Auth0ProviderWrapper>
             </body>
         </html>

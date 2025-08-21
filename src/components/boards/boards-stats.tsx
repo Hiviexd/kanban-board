@@ -1,11 +1,8 @@
 import { Kanban, Users, Calendar } from "lucide-react";
-import { BoardDisplay } from "@/lib/types/board";
+import { useBoards } from "@/hooks/useBoards";
 
-interface BoardsStatsProps {
-    boards: BoardDisplay[];
-}
-
-export default function BoardsStats({ boards }: BoardsStatsProps) {
+export default function BoardsStats() {
+    const { data: boards = [] } = useBoards();
     const totalMembers = boards.reduce((acc, board) => acc + board.memberCount, 0);
     const activeToday = boards.filter(
         (board) => board.lastActivity.includes("hour") || board.lastActivity.includes("today")

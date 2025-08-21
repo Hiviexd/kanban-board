@@ -2,15 +2,16 @@
 
 import BoardCard from "./board-card";
 import CreateBoardCard from "./create-board-card";
-import { BoardDisplay } from "@/lib/types/board";
+import { useBoards } from "@/hooks/useBoards";
 
 interface BoardsGridProps {
-    boards: BoardDisplay[];
     onBoardClick?: (boardId: string) => void;
     onCreateBoard?: () => void;
 }
 
-export default function BoardsGrid({ boards, onBoardClick, onCreateBoard }: BoardsGridProps) {
+export default function BoardsGrid({ onBoardClick, onCreateBoard }: BoardsGridProps) {
+    const { data: boards = [] } = useBoards();
+
     return (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boards.map((board) => (

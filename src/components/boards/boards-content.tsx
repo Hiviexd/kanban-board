@@ -1,19 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import BoardsHeader from "./boards-header";
 import BoardsStats from "./boards-stats";
 import BoardsGrid from "./boards-grid";
-import { BoardDisplay } from "@/lib/types/board";
+import { useBoards } from "@/hooks/useBoards";
 
-interface BoardsContentProps {
-    boards: BoardDisplay[];
-}
-
-export default function BoardsContent({ boards }: BoardsContentProps) {
-    const [error, setError] = useState<string | null>(null);
+export default function BoardsContent() {
+    const { data: boards = [], isLoading, error } = useBoards();
 
     const handleCreateBoard = () => {
         // TODO: Implement create board functionality
@@ -33,15 +28,15 @@ export default function BoardsContent({ boards }: BoardsContentProps) {
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-2 text-destructive">
                             <AlertCircle className="h-4 w-4" />
-                            <span>{error}</span>
+                            <span>{error.message}</span>
                         </div>
                     </CardContent>
                 </Card>
             )}
 
             <BoardsHeader onCreateBoard={handleCreateBoard} />
-            <BoardsStats boards={boards} />
-            <BoardsGrid boards={boards} onBoardClick={handleBoardClick} onCreateBoard={handleCreateBoard} />
+            <BoardsStats />
+            <BoardsGrid onBoardClick={handleBoardClick} onCreateBoard={handleCreateBoard} />
         </div>
     );
 }

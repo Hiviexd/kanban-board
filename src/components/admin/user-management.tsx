@@ -15,124 +15,46 @@ import { MoreHorizontal, Eye, Shield, Ban, Trash2, RefreshCw, AlertCircle } from
 import { User, UserRole, UserStatus } from "@/lib/types/user";
 import UserDetailsModal from "./user-details-modal";
 import { formatDate, formatRelativeTime } from "@/lib/date-utils";
+import { useUsers, useUpdateUserRole, useUpdateUserStatus, useDeleteUser } from "@/hooks/useUsers";
 
-interface UserManagementProps {
-    initialUsers: User[];
-    onUsersUpdate?: (users: User[]) => void;
-}
+export default function UserManagement() {
+    const { data: users = [], refetch } = useUsers();
+    const updateUserRole = useUpdateUserRole();
+    const updateUserStatus = useUpdateUserStatus();
+    const deleteUser = useDeleteUser();
 
-export default function UserManagement({ initialUsers, onUsersUpdate }: UserManagementProps) {
-    const [users, setUsers] = useState<User[]>(initialUsers);
-    const [actionLoading, setActionLoading] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [userDetailsOpen, setUserDetailsOpen] = useState(false);
 
-    // Update users and notify parent
-    const updateUsers = (newUsers: User[]) => {
-        setUsers(newUsers);
-        onUsersUpdate?.(newUsers);
-    };
-
-    // Fetch users from API
-    const fetchUsers = async () => {
-        try {
-            setError(null);
-
-            const response = await fetch("/api/users");
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(`Failed to fetch users: ${response.status} ${errorData.error || ""}`);
-            }
-
-            const data = await response.json();
-            updateUsers(data.users);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "An error occurred");
-        }
-    };
-
     // Update user role
-    const updateUserRole = async (userId: string, newRole: UserRole) => {
+    const handleUpdateUserRole = async (userId: string, newRole: UserRole) => {
         try {
-            setActionLoading(userId);
-            setError(null);
-
-            const response = await fetch(`/api/users/${userId}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ role: newRole }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to update user role");
-            }
-
-            // Refresh users list
-            await fetchUsers();
+            updateUserRole.mutate(userId, newRole);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to update user role");
-        } finally {
-            setActionLoading(null);
+            console.error("Failed to update user role:", err);
         }
     };
 
     // Toggle user ban status
-    const toggleUserBan = async (userId: string, currentStatus: UserStatus) => {
+    const handleToggleUserBan = async (userId: string, currentStatus: UserStatus) => {
         try {
-            setActionLoading(userId);
-            setError(null);
-
             const newStatus = currentStatus === UserStatus.ACTIVE ? UserStatus.BANNED : UserStatus.ACTIVE;
-
-            const response = await fetch(`/api/users/${userId}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ status: newStatus }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to update user status");
-            }
-
-            // Refresh users list
-            await fetchUsers();
+            updateUserStatus.mutate(userId, newStatus);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to update user status");
-        } finally {
-            setActionLoading(null);
+            console.error("Failed to update user status:", err);
         }
     };
 
     // Delete user
-    const deleteUser = async (userId: string) => {
+    const handleDeleteUser = async (userId: string) => {
         if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
             return;
         }
 
         try {
-            setActionLoading(userId);
-            setError(null);
-
-            const response = await fetch(`/api/users/${userId}`, {
-                method: "DELETE",
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to delete user");
-            }
-
-            // Refresh users list
-            await fetchUsers();
+            deleteUser.mutate(userId);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to delete user");
-        } finally {
-            setActionLoading(null);
+            console.error("Failed to delete user:", err);
         }
     };
 
@@ -161,12 +83,17 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                 </div>
             </CardHeader>
             <CardContent>
-                {/* Error Message */}
-                {error && (
+                {/* Error Messages */}
+                {(updateUserRole.error || updateUserStatus.error || deleteUser.error) && (
                     <div className="mb-4 p-3 border border-destructive rounded-md">
                         <div className="flex items-center gap-2 text-destructive text-sm">
                             <AlertCircle className="h-4 w-4" />
-                            <span>{error}</span>
+                            <span>
+                                {updateUserRole.error?.message ||
+                                    updateUserStatus.error?.message ||
+                                    deleteUser.error?.message ||
+                                    "An error occurred"}
+                            </span>
                         </div>
                     </div>
                 )}
@@ -216,8 +143,14 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                                                 <Button
                                                     variant="ghost"
                                                     className="h-8 w-8 p-0 cursor-pointer"
-                                                    disabled={actionLoading === user._id}>
-                                                    {actionLoading === user._id ? (
+                                                    disabled={
+                                                        updateUserRole.isPending ||
+                                                        updateUserStatus.isPending ||
+                                                        deleteUser.isPending
+                                                    }>
+                                                    {updateUserRole.isPending ||
+                                                    updateUserStatus.isPending ||
+                                                    deleteUser.isPending ? (
                                                         <RefreshCw className="h-4 w-4 animate-spin" />
                                                     ) : (
                                                         <MoreHorizontal className="h-4 w-4" />
@@ -233,28 +166,29 @@ export default function UserManagement({ initialUsers, onUsersUpdate }: UserMana
                                                 {/* Role change options */}
                                                 {user.role !== UserRole.ADMIN && (
                                                     <DropdownMenuItem
-                                                        onClick={() => updateUserRole(user._id, UserRole.ADMIN)}>
+                                                        onClick={() => handleUpdateUserRole(user._id, UserRole.ADMIN)}>
                                                         <Shield className="mr-2 h-4 w-4" />
                                                         Make Admin
                                                     </DropdownMenuItem>
                                                 )}
                                                 {user.role !== UserRole.USER && (
                                                     <DropdownMenuItem
-                                                        onClick={() => updateUserRole(user._id, UserRole.USER)}>
+                                                        onClick={() => handleUpdateUserRole(user._id, UserRole.USER)}>
                                                         <Shield className="mr-2 h-4 w-4" />
                                                         Remove Admin
                                                     </DropdownMenuItem>
                                                 )}
 
                                                 {/* Ban/Unban option */}
-                                                <DropdownMenuItem onClick={() => toggleUserBan(user._id, user.status)}>
+                                                <DropdownMenuItem
+                                                    onClick={() => handleToggleUserBan(user._id, user.status)}>
                                                     <Ban className="mr-2 h-4 w-4" />
                                                     {user.status === UserStatus.ACTIVE ? "Ban User" : "Unban User"}
                                                 </DropdownMenuItem>
 
                                                 {/* Delete option */}
                                                 <DropdownMenuItem
-                                                    onClick={() => deleteUser(user._id)}
+                                                    onClick={() => handleDeleteUser(user._id)}
                                                     className="text-destructive focus:text-destructive">
                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                     Delete User
