@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, Users, Plus, MoreHorizontal } from "lucide-react";
+import { Settings, Users, MoreHorizontal } from "lucide-react";
 import { BoardWithMetadata } from "@/lib/types/board";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,14 +32,12 @@ export default function BoardHeader({ board, presentUsers }: BoardHeaderProps) {
 
     return (
         <>
-            <div className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between px-6 py-4 bg-background border-b border-border">
                 {/* Left side - Board info */}
                 <div className="flex items-center space-x-4">
                     <div>
-                        <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{board.title}</h1>
-                        {board.description && (
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{board.description}</p>
-                        )}
+                        <h1 className="text-xl font-semibold text-foreground">{board.title}</h1>
+                        {board.description && <p className="text-sm text-muted-foreground mt-1">{board.description}</p>}
                     </div>
 
                     {/* Public/Private indicator */}
@@ -47,8 +45,8 @@ export default function BoardHeader({ board, presentUsers }: BoardHeaderProps) {
                         <span
                             className={`px-2 py-1 text-xs rounded-full ${
                                 board.isPublic
-                                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-                                    : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
+                                    ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
+                                    : "bg-muted text-muted-foreground"
                             }`}>
                             {board.isPublic ? "Public" : "Private"}
                         </span>
@@ -64,7 +62,7 @@ export default function BoardHeader({ board, presentUsers }: BoardHeaderProps) {
                                 {presentUsers.slice(0, 3).map((user) => (
                                     <div
                                         key={user.id}
-                                        className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 border-2 border-white dark:border-gray-900 flex items-center justify-center text-sm font-medium"
+                                        className="w-8 h-8 rounded-full bg-muted border-2 border-background flex items-center justify-center text-sm font-medium"
                                         title={user.name}>
                                         {user.picture ? (
                                             <img
@@ -73,20 +71,20 @@ export default function BoardHeader({ board, presentUsers }: BoardHeaderProps) {
                                                 className="w-full h-full rounded-full object-cover"
                                             />
                                         ) : (
-                                            <span className="text-gray-700 dark:text-gray-300">
+                                            <span className="text-muted-foreground font-medium">
                                                 {user.name.charAt(0).toUpperCase()}
                                             </span>
                                         )}
                                     </div>
                                 ))}
                                 {presentUsers.length > 3 && (
-                                    <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 border-2 border-white dark:border-gray-900 flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-400">
+                                    <div className="w-8 h-8 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs font-medium text-muted-foreground">
                                         +{presentUsers.length - 3}
                                     </div>
                                 )}
                             </div>
 
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                            <span className="text-sm text-muted-foreground">
                                 {presentUsers.length === 1 ? "1 user online" : `${presentUsers.length} users online`}
                             </span>
                         </div>
@@ -119,7 +117,7 @@ export default function BoardHeader({ board, presentUsers }: BoardHeaderProps) {
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
-                                        className="text-red-600 dark:text-red-400"
+                                        className="text-destructive focus:text-destructive"
                                         onClick={() => {
                                             // TODO: Implement board deletion
                                             console.log("Delete board");

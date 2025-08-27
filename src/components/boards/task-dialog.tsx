@@ -130,7 +130,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
         high: "text-red-600 dark:text-red-400",
         medium: "text-yellow-600 dark:text-yellow-400",
         low: "text-green-600 dark:text-green-400",
-        none: "text-gray-600 dark:text-gray-400",
+        none: "text-muted-foreground",
     }[task.priority];
 
     return (
@@ -146,10 +146,10 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                 {isComplete ? (
                                     <CheckCircle className="h-6 w-6 text-green-600" />
                                 ) : (
-                                    <Circle className="h-6 w-6 text-gray-400" />
+                                    <Circle className="h-6 w-6 text-muted-foreground" />
                                 )}
                             </button>
-                            <span className={isComplete ? "line-through text-gray-500" : ""}>Task Details</span>
+                            <span className={isComplete ? "line-through text-muted-foreground" : ""}>Task Details</span>
                         </DialogTitle>
                         <div className="flex items-center gap-2">
                             {task.isOverdue && !isComplete && (
@@ -176,7 +176,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                 setTitle(e.target.value);
                                 setHasChanges(true);
                             }}
-                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            className="w-full p-3 border border-input rounded-md bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                             placeholder="Task title..."
                             disabled={!board.canEdit}
                         />
@@ -192,7 +192,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                 setHasChanges(true);
                             }}
                             rows={4}
-                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            className="w-full p-3 border border-input rounded-md bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                             placeholder="Add a description..."
                             disabled={!board.canEdit}
                         />
@@ -211,7 +211,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                     setAssigneeId(e.target.value);
                                     setHasChanges(true);
                                 }}
-                                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                                className="w-full p-3 border border-input rounded-md bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
                                 <option value="">Unassigned</option>
                                 {/* TODO: Add board members as options */}
                                 {task.assignee && <option value={task.assigneeId}>{task.assignee.name}</option>}
@@ -221,8 +221,8 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
 
                     {/* Current Assignee Display */}
                     {task.assignee && (
-                        <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
-                            <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-sm">
+                        <div className="flex items-center gap-3 p-3 bg-muted rounded-md">
+                            <div className="w-8 h-8 rounded-full bg-background border flex items-center justify-center text-sm">
                                 {task.assignee.picture ? (
                                     <img
                                         src={task.assignee.picture}
@@ -230,14 +230,14 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                         className="w-full h-full rounded-full object-cover"
                                     />
                                 ) : (
-                                    <span className="text-gray-700 dark:text-gray-300">
+                                    <span className="text-muted-foreground font-medium">
                                         {task.assignee.name.charAt(0).toUpperCase()}
                                     </span>
                                 )}
                             </div>
                             <div>
-                                <div className="font-medium text-gray-900 dark:text-gray-100">{task.assignee.name}</div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">{task.assignee.email}</div>
+                                <div className="font-medium text-foreground">{task.assignee.name}</div>
+                                <div className="text-sm text-muted-foreground">{task.assignee.email}</div>
                             </div>
                         </div>
                     )}
@@ -256,7 +256,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                     setStartDate(e.target.value);
                                     setHasChanges(true);
                                 }}
-                                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                className="w-full p-3 border border-input rounded-md bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                                 disabled={!board.canEdit}
                             />
                         </div>
@@ -272,7 +272,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                                     setDueDate(e.target.value);
                                     setHasChanges(true);
                                 }}
-                                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                className="w-full p-3 border border-input rounded-md bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                                 disabled={!board.canEdit}
                             />
                         </div>
@@ -306,7 +306,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
                     </div>
 
                     {/* Task Metadata */}
-                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
                         <div>
                             <span className="font-medium">Created:</span>{" "}
                             {new Date(task.createdAt).toLocaleDateString()}
@@ -325,7 +325,7 @@ export default function TaskDialog({ task, board, open, onOpenChange }: TaskDial
 
                 {/* Action Buttons */}
                 {board.canEdit && (
-                    <div className="flex justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex justify-between pt-6 border-t border-border">
                         <Button
                             variant="outline"
                             onClick={handleDelete}

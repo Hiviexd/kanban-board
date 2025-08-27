@@ -34,9 +34,7 @@ export default function CreateTaskForm({ columnId, boardId, onCancel, onSuccess 
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
+        <form onSubmit={handleSubmit} className="bg-card p-3 rounded-lg border border-border">
             <textarea
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}

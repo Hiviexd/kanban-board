@@ -71,7 +71,7 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
     const getRoleIcon = (role: string, isOwner: boolean) => {
         if (isOwner) return <Crown className="h-4 w-4 text-yellow-600" />;
         if (role === "editor") return <Edit className="h-4 w-4 text-blue-600" />;
-        return <Eye className="h-4 w-4 text-gray-600" />;
+        return <Eye className="h-4 w-4 text-muted-foreground" />;
     };
 
     const getRoleLabel = (role: string, isOwner: boolean) => {
@@ -121,7 +121,7 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
                             {showAddMember && (
                                 <div className="space-y-3">
                                     <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                         <Input
                                             placeholder="Search users by name or email..."
                                             value={searchQuery}
@@ -141,9 +141,9 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
                                                     {availableUsers.map((user) => (
                                                         <div
                                                             key={user._id}
-                                                            className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded">
+                                                            className="flex items-center justify-between p-2 hover:bg-accent rounded">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-sm font-medium">
+                                                                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
                                                                     {user.picture ? (
                                                                         <img
                                                                             src={user.picture}
@@ -156,7 +156,7 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
                                                                 </div>
                                                                 <div>
                                                                     <p className="font-medium text-sm">{user.name}</p>
-                                                                    <p className="text-xs text-gray-500">
+                                                                    <p className="text-xs text-muted-foreground">
                                                                         {user.email}
                                                                     </p>
                                                                 </div>
@@ -171,7 +171,7 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
                                                     ))}
                                                 </div>
                                             ) : (
-                                                <div className="text-center py-4 text-sm text-gray-500">
+                                                <div className="text-center py-4 text-sm text-muted-foreground">
                                                     No available users found
                                                 </div>
                                             )}
@@ -184,9 +184,7 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
 
                     {/* Members List */}
                     <div className="space-y-3">
-                        <h3 className="font-medium text-sm text-gray-700 dark:text-gray-300">
-                            Members ({members.length})
-                        </h3>
+                        <h3 className="font-medium text-sm text-foreground">Members ({members.length})</h3>
 
                         {isMembersLoading ? (
                             <div className="flex justify-center py-8">
@@ -203,7 +201,7 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
                                         key={member._id}
                                         className="flex items-center justify-between p-3 border rounded-lg">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-sm font-medium">
+                                            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
                                                 {member.picture ? (
                                                     <img
                                                         src={member.picture}
@@ -216,12 +214,12 @@ export default function BoardMembersDialog({ board, open, onOpenChange }: BoardM
                                             </div>
                                             <div>
                                                 <p className="font-medium">{member.name}</p>
-                                                <p className="text-sm text-gray-500">{member.email}</p>
+                                                <p className="text-sm text-muted-foreground">{member.email}</p>
                                             </div>
                                         </div>
 
                                         <div className="flex items-center gap-2">
-                                            <div className="flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm">
+                                            <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded text-sm">
                                                 {getRoleIcon(member.role, member.isOwner)}
                                                 <span>{getRoleLabel(member.role, member.isOwner)}</span>
                                             </div>

@@ -39,7 +39,7 @@ export default function CreateColumnForm({ boardId, onCancel }: CreateColumnForm
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Enter list title..."
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-sm border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground"
                     autoFocus
                     maxLength={100}
                 />
@@ -57,7 +57,7 @@ export default function CreateColumnForm({ boardId, onCancel }: CreateColumnForm
                         variant="ghost"
                         size="sm"
                         onClick={onCancel}
-                        className="text-gray-600 hover:text-gray-800">
+                        className="text-muted-foreground hover:text-foreground">
                         Cancel
                     </Button>
                 </div>

@@ -173,20 +173,18 @@ export default function KanbanBoard({ boardId, board }: KanbanBoardProps) {
             <DragOverlay>
                 {activeItem?.type === "task" && activeItem?.task ? (
                     <div className="transform rotate-2 scale-105">
-                        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-2xl border-2 border-blue-400 dark:border-blue-500 opacity-95">
+                        <div className="bg-card rounded-lg shadow-2xl border-2 border-primary opacity-95">
                             <TaskCard task={activeItem.task} canEdit={board.canEdit} />
                         </div>
                     </div>
                 ) : activeItem?.type === "column" && activeItem?.column ? (
                     <div className="transform rotate-1 opacity-95 scale-105">
-                        <div className="w-80 bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-blue-500 shadow-xl">
-                            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                                <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                                    {activeItem.column.title}
-                                </h3>
+                        <div className="w-80 bg-card rounded-lg border-2 border-primary shadow-xl">
+                            <div className="p-4 border-b border-border">
+                                <h3 className="font-medium text-foreground">{activeItem.column.title}</h3>
                             </div>
                             <div className="p-4">
-                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                <div className="text-sm text-muted-foreground">
                                     {activeItem.column.taskCount || 0} tasks
                                 </div>
                             </div>

@@ -70,15 +70,15 @@ export default function Column({ column, boardId, board, canEdit }: ColumnProps)
         <div
             ref={setNodeRef}
             style={style}
-            className={`flex flex-col w-80 bg-gray-50 dark:bg-gray-800 rounded-lg ${isDragging ? "opacity-50" : ""}`}>
+            className={`flex flex-col w-80 bg-card rounded-lg border ${isDragging ? "opacity-50" : ""}`}>
             {/* Column Header */}
             <div
                 {...attributes}
                 {...listeners}
-                className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 cursor-grab active:cursor-grabbing">
+                className="flex items-center justify-between p-4 border-b border-border cursor-grab active:cursor-grabbing">
                 <div className="flex items-center space-x-2">
-                    <h3 className="font-medium text-gray-900 dark:text-gray-100">{column.title}</h3>
-                    <span className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
+                    <h3 className="font-medium text-foreground">{column.title}</h3>
+                    <span className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded-full">
                         {tasks?.length || 0}
                     </span>
                 </div>
@@ -136,10 +136,8 @@ export default function Column({ column, boardId, board, canEdit }: ColumnProps)
                                 ? "bg-blue-100 dark:bg-blue-800/30 border-2 border-dashed border-blue-400 dark:border-blue-500"
                                 : ""
                         }`}>
-                        <p className="text-gray-500 dark:text-gray-400 text-sm">
-                            {isOver ? "Drop task here" : "No tasks yet"}
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                        <p className="text-muted-foreground text-sm">{isOver ? "Drop task here" : "No tasks yet"}</p>
+                        <p className="text-xs text-muted-foreground/70 mt-1">
                             {canEdit && !isOver ? "Add a task below or drag one here" : ""}
                         </p>
                     </div>
@@ -158,7 +156,7 @@ export default function Column({ column, boardId, board, canEdit }: ColumnProps)
 
             {/* Add Task Button */}
             {canEdit && !showCreateTask && (
-                <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="p-4 border-t border-border">
                     <Button
                         variant="ghost"
                         size="sm"

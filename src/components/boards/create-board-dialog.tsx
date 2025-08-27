@@ -61,7 +61,7 @@ export default function CreateBoardDialog({ open, onOpenChange }: CreateBoardDia
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Board Title */}
                     <div className="space-y-2">
-                        <label htmlFor="title" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label htmlFor="title" className="text-sm font-medium text-foreground">
                             Board Title *
                         </label>
                         <Input
@@ -77,7 +77,7 @@ export default function CreateBoardDialog({ open, onOpenChange }: CreateBoardDia
 
                     {/* Board Description */}
                     <div className="space-y-2">
-                        <label htmlFor="description" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label htmlFor="description" className="text-sm font-medium text-foreground">
                             Description (optional)
                         </label>
                         <textarea
@@ -88,7 +88,7 @@ export default function CreateBoardDialog({ open, onOpenChange }: CreateBoardDia
                             rows={3}
                             maxLength={500}
                             disabled={createBoard.isPending}
-                            className="flex w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-900 dark:placeholder:text-gray-400 dark:focus-visible:ring-blue-400 resize-none"
+                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                         />
                     </div>
 
@@ -96,17 +96,15 @@ export default function CreateBoardDialog({ open, onOpenChange }: CreateBoardDia
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <div className="space-y-1">
-                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Board Visibility
-                                </label>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                <label className="text-sm font-medium text-foreground">Board Visibility</label>
+                                <p className="text-xs text-muted-foreground">
                                     {isPublic
                                         ? "Anyone can view this board, but only members can edit."
                                         : "Only board members can view and edit this board."}
                                 </p>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <span className={`text-sm ${!isPublic ? "font-medium" : "text-gray-500"}`}>
+                                <span className={`text-sm ${!isPublic ? "font-medium" : "text-muted-foreground"}`}>
                                     Private
                                 </span>
                                 <Switch
@@ -114,7 +112,9 @@ export default function CreateBoardDialog({ open, onOpenChange }: CreateBoardDia
                                     onCheckedChange={setIsPublic}
                                     disabled={createBoard.isPending}
                                 />
-                                <span className={`text-sm ${isPublic ? "font-medium" : "text-gray-500"}`}>Public</span>
+                                <span className={`text-sm ${isPublic ? "font-medium" : "text-muted-foreground"}`}>
+                                    Public
+                                </span>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,7 @@ export default function BoardSettingsDialog({ board, open, onOpenChange }: Board
                 </DialogHeader>
 
                 <div className="py-4">
-                    <p className="text-gray-600 dark:text-gray-400">Board settings management coming soon...</p>
+                    <p className="text-muted-foreground">Board settings management coming soon...</p>
                     {/* TODO: Implement board settings management */}
                 </div>
             </DialogContent>
