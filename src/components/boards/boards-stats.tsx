@@ -4,9 +4,16 @@ import { useBoards } from "@/hooks/useBoards";
 export default function BoardsStats() {
     const { data: boards = [] } = useBoards();
     const totalMembers = boards.reduce((acc, board) => acc + board.memberCount, 0);
-    const activeToday = boards.filter(
-        (board) => board.lastActivity.includes("hour") || board.lastActivity.includes("today")
-    ).length;
+    const activeToday = boards.filter((board) => {
+        if (!board.lastActivity) return false;
+        if (typeof board.lastActivity === "string") {
+            return board.lastActivity.includes("hour") || board.lastActivity.includes("today");
+        }
+        // If it's a Date, check if it's today
+        const today = new Date();
+        const activityDate = board.lastActivity;
+        return activityDate.toDateString() === today.toDateString();
+    }).length;
 
     return (
         <div className="grid md:grid-cols-3 gap-6 mb-8">

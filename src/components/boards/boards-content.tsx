@@ -1,23 +1,26 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import BoardsHeader from "./boards-header";
 import BoardsStats from "./boards-stats";
 import BoardsGrid from "./boards-grid";
-import { useBoards } from "@/hooks/useBoards";
+import CreateBoardDialog from "./create-board-dialog";
+import { useBoards } from "@/hooks/useBoardData";
 
 export default function BoardsContent() {
+    const router = useRouter();
+    const [showCreateDialog, setShowCreateDialog] = useState(false);
     const { data: boards = [], isLoading, error } = useBoards();
 
     const handleCreateBoard = () => {
-        // TODO: Implement create board functionality
-        console.log("Create board clicked");
+        setShowCreateDialog(true);
     };
 
     const handleBoardClick = (boardId: string) => {
-        // TODO: Implement board navigation
-        console.log("Board clicked:", boardId);
+        router.push(`/boards/${boardId}`);
     };
 
     return (
@@ -37,6 +40,9 @@ export default function BoardsContent() {
             <BoardsHeader onCreateBoard={handleCreateBoard} />
             <BoardsStats />
             <BoardsGrid onBoardClick={handleBoardClick} onCreateBoard={handleCreateBoard} />
+
+            {/* Create Board Dialog */}
+            <CreateBoardDialog open={showCreateDialog} onOpenChange={setShowCreateDialog} />
         </div>
     );
 }

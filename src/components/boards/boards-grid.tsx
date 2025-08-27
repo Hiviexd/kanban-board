@@ -2,7 +2,7 @@
 
 import BoardCard from "./board-card";
 import CreateBoardCard from "./create-board-card";
-import { useBoards } from "@/hooks/useBoards";
+import { useBoards } from "@/hooks/useBoardData";
 
 interface BoardsGridProps {
     onBoardClick?: (boardId: string) => void;
@@ -15,7 +15,7 @@ export default function BoardsGrid({ onBoardClick, onCreateBoard }: BoardsGridPr
     return (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boards.map((board) => (
-                <BoardCard key={board._id} board={board} onClick={onBoardClick} />
+                <BoardCard key={board._id} board={board as any} onClick={onBoardClick} />
             ))}
 
             <CreateBoardCard onClick={onCreateBoard} />

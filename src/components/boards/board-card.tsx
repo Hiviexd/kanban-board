@@ -1,10 +1,10 @@
 "use client";
 
 import { Users } from "lucide-react";
-import { BoardDisplay } from "@/lib/types/board";
+import { BoardWithMetadata } from "@/lib/types/board";
 
 interface BoardCardProps {
-    board: BoardDisplay;
+    board: BoardWithMetadata;
     onClick?: (boardId: string) => void;
 }
 
@@ -31,7 +31,13 @@ export default function BoardCard({ board, onClick }: BoardCardProps) {
                     <Users className="h-4 w-4 mr-1" />
                     <span>{board.memberCount} members</span>
                 </div>
-                <span>{board.lastActivity}</span>
+                <span>
+                    {board.lastActivity
+                        ? board.lastActivity instanceof Date
+                            ? board.lastActivity.toLocaleDateString()
+                            : board.lastActivity
+                        : "No activity"}
+                </span>
             </div>
         </div>
     );
