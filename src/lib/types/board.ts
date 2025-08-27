@@ -4,6 +4,12 @@ export enum BoardRole {
     VIEWER = "viewer",
 }
 
+export interface BoardLabel {
+    id: string;
+    name: string;
+    color: string;
+}
+
 export interface BoardMember {
     userId: string;
     role: BoardRole;
@@ -16,17 +22,41 @@ export interface Board {
     description?: string;
     ownerId: string;
     members: BoardMember[];
+    labels: BoardLabel[];
     isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
 
-// Temp interface for dummy data, switch to the one above when we have the real data
-export interface BoardDisplay {
-    _id: string;
-    title: string;
-    description: string;
+// Extended board interface with computed properties for display
+export interface BoardWithMetadata extends Board {
     memberCount: number;
-    lastActivity: string;
-    isPublic: boolean;
+    lastActivity?: string | Date;
+    userRole?: BoardRole;
+    canEdit: boolean;
+    canView: boolean;
+}
+
+// Request/Response types for API
+export interface CreateBoardRequest {
+    title: string;
+    description?: string;
+    isPublic?: boolean;
+    labels?: BoardLabel[];
+}
+
+export interface UpdateBoardRequest {
+    title?: string;
+    description?: string;
+    isPublic?: boolean;
+    labels?: BoardLabel[];
+}
+
+export interface AddBoardMemberRequest {
+    userId: string;
+    role: BoardRole;
+}
+
+export interface UpdateBoardMemberRequest {
+    role: BoardRole;
 }
