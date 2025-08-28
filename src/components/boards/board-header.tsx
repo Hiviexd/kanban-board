@@ -46,7 +46,7 @@ export default function BoardHeader({ board, presentUsers }: BoardHeaderProps) {
                             className={`px-2 py-1 text-xs rounded-full ${
                                 board.isPublic
                                     ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
-                                    : "bg-muted text-muted-foreground"
+                                    : "bg-gray-200 text-muted-foreground"
                             }`}>
                             {board.isPublic ? "Public" : "Private"}
                         </span>

@@ -78,7 +78,7 @@ export default function Column({ column, boardId, board, canEdit }: ColumnProps)
                 className="flex items-center justify-between p-4 border-b border-border cursor-grab active:cursor-grabbing">
                 <div className="flex items-center space-x-2">
                     <h3 className="font-medium text-foreground">{column.title}</h3>
-                    <span className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded-full">
+                    <span className="px-2 py-1 text-xs bg-gray-200 text-muted-foreground rounded-full">
                         {tasks?.length || 0}
                     </span>
                 </div>
