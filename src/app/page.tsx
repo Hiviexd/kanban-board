@@ -2,8 +2,17 @@ import { Button } from "@/components/ui/button";
 import MainLayout from "@/components/layout/main-layout";
 import { Kanban, Users, Zap } from "lucide-react";
 import Link from "next/link";
+import { getAuthContext } from "@/lib/auth-utils";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+    const authContext = await getAuthContext();
+
+    if (authContext.isAuthenticated) {
+        if (authContext.isAdmin) redirect("/admin");
+        else redirect("/boards");
+    }
+
     return (
         <MainLayout>
             <div className="container mx-auto px-4 py-16">
@@ -57,9 +66,7 @@ export default function Home() {
                 {/* CTA Section */}
                 <div className="text-center bg-muted/50 rounded-lg p-8">
                     <h2 className="text-2xl font-semibold mb-4">Ready to get started?</h2>
-                    <p className="text-muted-foreground mb-6">
-                        Sign up now and start organizing your projects!
-                    </p>
+                    <p className="text-muted-foreground mb-6">Sign up now and start organizing your projects!</p>
                     <Button size="lg" asChild variant="outline">
                         <a href="/auth/login">Sign Up Now</a>
                     </Button>
